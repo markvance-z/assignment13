@@ -10,10 +10,12 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class MetricConverter extends Application {
-  private TextField tfEntry = new TextField();
-  private TextField tfResult = new TextField();
+    ComboBox<String> unitFromComboBox = new ComboBox<>();
+    ComboBox<String> unitToComboBox = new ComboBox<>();
+    private TextField tfEntry = new TextField();
+    private TextField tfResult = new TextField();
 
-  private Button btCalculate = new Button("Calculate");
+    private Button btCalculate = new Button("Calculate");
 
 
   @Override // Override the start method in the Application class
@@ -24,13 +26,15 @@ public class MetricConverter extends Application {
     gridPane.setVgap(5);
 
     gridPane.add(new Label("Metric Unit"), 0, 0);
-    ComboBox<String> unitFromComboBox = new ComboBox<>();
-    unitFromComboBox.getItems().addAll("Meters", "Centimeters");
+    unitFromComboBox = new ComboBox<>();
+    unitFromComboBox.getItems().addAll("km", "m", "kg", "lb", "ft", "mi", "mph", "kph" );
+    //unitFromComboBox.getItems().addAll("Kilometers", "Meters", "Kilograms", "Pounds", "Feet", "Miles", "Miles/Hour", "kilometer/hour" );
     gridPane.add(unitFromComboBox, 1, 0);
 
     gridPane.add(new Label("Imperial Unit"), 0, 1);
-    ComboBox<String> unitToComboBox = new ComboBox<>();
-    unitToComboBox.getItems().addAll("Feet", "Inches");
+    unitToComboBox = new ComboBox<>();
+    unitToComboBox.getItems().addAll("km", "m", "kg", "lb", "ft", "mi", "mph", "kph");
+    //unitToComboBox.getItems().addAll("Kilometers", "Meters", "Kilograms", "Pounds", "Feet", "Miles", "Miles/Hour", "kilometer/hour");
     gridPane.add(unitToComboBox, 1, 1);
 
     gridPane.add(new Label("Enter value:"), 0, 2);
@@ -59,21 +63,68 @@ public class MetricConverter extends Application {
     primaryStage.show(); // Display the stage
   }
   
+
   private void calculate() {
     // Get values from text fields
 
-    
+    String fromUnit = unitFromComboBox.getValue();
+    String toUnit = unitToComboBox.getValue();
+    double value = Double.parseDouble(tfEntry.getText());
+
+    System.out.println("fromUnit: " + fromUnit);
+    System.out.println("toUnit: " + toUnit);
+    System.out.println("value: " + value);
+
+    try {
+        value = Double.parseDouble(tfEntry.getText());
+    } catch (NumberFormatException e) {
+        tfResult.setText("Invalid input");
+        return;
+    }
+    if (value < 0) {
+        tfResult.setText("Invalid input");
+        return;
+    }
+
+    double result = 0;
+    switch (fromUnit + toUnit) {
+        case "kmm":
+            result = value * 1000;
+            break;
+        case "mkm":
+            result = value / 1000;
+            break;
+        case "kglb":
+            result = value * 2.20462;
+            break;
+        case "lbkg":
+            result = value / 2.20462;
+            break;
+        case "ftm":
+            result = value * .3048;
+            break;
+        case "mft":
+            result = value / .3048;
+            break;
+        case "mikm":
+            result = value * 1.609344;
+            break;
+        case "kmmi":
+            result = value / 1.609344;
+            break;
+        case "mphkph":
+            result = value * 1.609344;
+            break;
+        case "kphmph":
+            result = value / 1.609344;
+            break;
+        default:
+            tfResult.setText("Invalid input");
+            return;
+    }
 
     // Display result
+    tfResult.setText(String.format("%.2f %s = %.2f %s", value, fromUnit, result, toUnit));
+    }
 
-
-  }
-  
-  /**
-   * The main method is only needed for the IDE with limited
-   * JavaFX support. Not needed for running from the command line.
-   */
-  public static void main(String[] args) {
-    launch(args);
-  }
 }
