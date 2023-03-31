@@ -25,13 +25,13 @@ public class MetricConverter extends Application {
     gridPane.setHgap(5);
     gridPane.setVgap(5);
 
-    gridPane.add(new Label("Metric Unit"), 0, 0);
+    gridPane.add(new Label("From Unit"), 0, 0);
     unitFromComboBox = new ComboBox<>();
     unitFromComboBox.getItems().addAll("km", "m", "kg", "lb", "ft", "mi", "mph", "kph" );
     //unitFromComboBox.getItems().addAll("Kilometers", "Meters", "Kilograms", "Pounds", "Feet", "Miles", "Miles/Hour", "kilometer/hour" );
     gridPane.add(unitFromComboBox, 1, 0);
 
-    gridPane.add(new Label("Imperial Unit"), 0, 1);
+    gridPane.add(new Label("To Unit"), 0, 1);
     unitToComboBox = new ComboBox<>();
     unitToComboBox.getItems().addAll("km", "m", "kg", "lb", "ft", "mi", "mph", "kph");
     //unitToComboBox.getItems().addAll("Kilometers", "Meters", "Kilograms", "Pounds", "Feet", "Miles", "Miles/Hour", "kilometer/hour");
@@ -43,6 +43,8 @@ public class MetricConverter extends Application {
     gridPane.add(tfResult, 1, 3);
 
     gridPane.add(btCalculate, 1, 5);
+    Label lblAvailableConversions = new Label("Available Conversions: \n-km/m\n-m/km\n-kg/lb\n-lb/kg\n-ft/m\n-m/ft\n-mi/km\n-km/mi\n-mph/kph\n-kph/mph");
+    gridPane.add(lblAvailableConversions, 0, 6, 2, 1);
 
     // Set properties for UI
     gridPane.setAlignment(Pos.CENTER);
